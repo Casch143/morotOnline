@@ -1,0 +1,123 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<title> PLAY MOROT ONLINE </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<style>
+			body{
+				margin:0;
+				background-image: linear-gradient(145deg, #FF7B33, #FDAE69);
+			}
+			
+			.container{
+				width:100vw;
+				height:100vh;
+				
+				font-family: 'Quicksand', sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+				
+				display:grid; 
+				grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+				grid-template-rows: 50px 1fr 1fr 1fr 100px;
+				
+				gap:10px;
+				
+				padding:10px;
+				box-sizing:border-box;
+			}
+			
+			.container div {
+				padding:10px;
+				text-align: center;
+				border-radius: 5px;
+			}
+			
+			.header{
+				grid-column-start:1;
+				grid-column-end:7;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.footer{
+				grid-column-start:1;
+				grid-column-end:7;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.content-main{
+				grid-row-start:2;
+				grid-row-end: 3;
+				grid-column-start:1;
+				grid-column-end:span 6;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.content-medium{
+				grid-row-start:3;
+				grid-row-end: 4;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.content-small{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			.input{
+				width: 80%;
+				border-radius: 5px;
+				font-family: 'Quicksand', sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+				padding-left:10px;
+				padding-right:10px;
+			}
+			
+			.button{
+				border-radius: 5px;
+				font-family: 'Quicksand', sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				Welcome to the game of MOROT
+			</div>
+			<div class="content-main">
+			<br>
+				<h2>404</h2>
+				<h1 id="role">Hmm.... something went wrong.. :(</h1>
+			</div>
+			<div class="content-medium" style="grid-column-start:1; grid-column-end:span 3;"> 
+			</div>
+			<div class="content-medium" style="grid-column-start:4; grid-column-end:span 3;"> 
+			</div>
+			<div class="content-small" style="grid-column-start:1; grid-column-end:3;">
+			</div>
+			<div class="content-small" style="grid-column-start:3; grid-column-end:5;">
+			</div>
+			<div class="content-small" style="grid-column-start:5; grid-column-end:7;">
+			</div>
+			<div class="footer">
+			</div>
+		</div>
+	</body>
+</html>
+
+
+

@@ -1,0 +1,335 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<title> PLAY MOROT ONLINE </title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<style>
+			body{
+				margin:0;
+				background-image: linear-gradient(145deg, #FF7B33, #FDAE69);
+			}
+			
+			.container{
+				width:100vw;
+				height:100vh;
+				
+				font-family: 'Quicksand', sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+				
+				display:grid; 
+				grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+				grid-template-rows: 50px 1fr 1fr 1fr 100px;
+				
+				gap:10px;
+				
+				padding:10px;
+				box-sizing:border-box;
+			}
+			
+			.container div {
+				padding:10px;
+				text-align: center;
+				border-radius: 5px;
+			}
+			
+			.header{
+				grid-column-start:1;
+				grid-column-end:7;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.footer{
+				grid-column-start:1;
+				grid-column-end:7;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.content-main{
+				grid-row-start:2;
+				grid-row-end: 3;
+				grid-column-start:1;
+				grid-column-end:span 6;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.content-medium{
+				grid-row-start:3;
+				grid-row-end: 4;
+				border:1px solid #000000;
+				box-shadow: 2px 2px 5px 2px #000000;
+				background: #D6D6D6;
+			}
+			
+			.content-small{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			.input{
+				width: 80%;
+				border-radius: 5px;
+				font-family: 'Quicksand', sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+				padding-left:10px;
+				padding-right:10px;
+			}
+			
+			.button{
+				border-radius: 5px;
+				font-family: 'Quicksand', sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				Welcome to the game of MOROT
+			</div>
+			<div class="content-main">
+			<br>
+				<h2>You are:</h2>
+				<h1 id="role">-- Role --</h1>
+				<button type="button" class="button" onclick="new_round()">New round!</button>
+				<br>
+				<br>
+				<h3>Connected to</h3>
+				<p id="session">---</p>
+				<p id="players_array" style="display:none">[]</p>
+				<p id="true_player" style="display:none">0</p>
+			</div>
+			<div class="content-medium" style="grid-column-start:1; grid-column-end:span 3;"> 
+				<h2>Players:</h2>
+				<h2 id="players">0</h2>
+			</div>
+			<div class="content-medium" style="grid-column-start:4; grid-column-end:span 3;"> 
+				<h2>Player:</h2>
+				<h2 id="player">0</h2>
+			</div>
+			<div class="content-small" style="grid-column-start:1; grid-column-end:3;">
+				<h3>Join or create game: </h3>
+			</div>
+			<div class="content-small" style="grid-column-start:3; grid-column-end:5;">
+				<input type="text" class="input" id="session_id" value="morot">
+			</div>
+			<div class="content-small" style="grid-column-start:5; grid-column-end:7;">
+				<button type="button" class="button" style="margin-right:10px" onclick="new_game()">New game!</button>
+				<button type="button" class="button" onclick="join_game()">Join game!</button>
+			</div>
+			<div class="footer">
+				<h5 style="margin-bottom:8px; margin-top:15px">Made by: Casper Christiansen</h5>
+				<button type="button" onclick="leave_session('morot')">Don't know the rules?</button>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script>
+	function publish_data(data_base, values){
+	var url = "http://85.226.196.207:5000/publish_sensor";
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url);
+
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:3000/");
+	
+	xhr.onreadystatechange = function () {
+	   if (xhr.readyState === 4) {
+		  console.log(xhr.status);
+		  console.log(xhr.responseText);
+	   }};
+
+	//var data = '{"data_base":"morot","values":"1"}';
+	var data = '{"data_base":\"' + data_base + '","values":' + values + '}';
+	console.log(data)
+	xhr.send(data);
+	return 200
+	}
+
+	var oldNumberPlayers = 0
+
+	function get_data(data_base){
+		var url = "http://85.226.196.207:5000/get_sensor";
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", url);
+		
+		var response = ""
+
+		xhr.setRequestHeader("data_base", data_base);
+		xhr.setRequestHeader("values", "1");
+
+		xhr.onreadystatechange = function () {
+		   if (xhr.readyState === 4) {
+			  const obj = JSON.parse(xhr.responseText)
+			  let b = String(obj['values']['players']).split(',').map(Number)
+				sum = 0
+				for(var i = 0; i < parseInt(document.getElementById("true_player").innerHTML); i++) {
+				  sum += b[i]
+				 }
+				console.log(xhr.responseText)
+				if(parseInt(document.getElementById("true_player").innerHTML) == obj["values"]["morot"]+1){
+					document.getElementById("role").innerHTML = "Morot"
+				}
+				else{
+					document.getElementById("role").innerHTML = obj['values']['person']
+				}
+				document.getElementById("player").innerHTML = parseInt(document.getElementById("true_player").innerHTML)-sum;
+				sum = 0
+				for(var i = 0; i < obj['values']['players'].length; i++) {
+				  sum += b[i]
+				 }
+				document.getElementById("players").innerHTML = obj['values']['players'].length-sum;
+				document.getElementById("players_array").innerHTML = obj['values']['players']
+			}
+		   };
+		xhr.send();
+	}
+
+
+	function update_players(data_base){
+		var url = "http://85.226.196.207:5000/get_sensor";
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", url);
+		
+		var response = ""
+
+		xhr.setRequestHeader("data_base", data_base);
+		xhr.setRequestHeader("values", "1");
+		xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:3000/");
+		
+
+		xhr.onreadystatechange = function () {
+		   if (xhr.readyState === 4) {
+			  console.log(xhr.status);
+			  if(xhr.status == 500){
+				  new_game(data_base)
+			  }
+			  else{
+				  const obj = JSON.parse(xhr.responseText)
+				  if(String(obj['values']['players']) == ""){
+					  values = '{"players":[' + "0" + '],"morot": 1, "person": "New player"}'
+				  }
+				  else{
+					  const length = String(obj['values']['players']).length
+					  let b = String(obj['values']['players']).split(',').map(Number)
+					  b.push(0)
+					  values = '{"players":[' + String(b) + '],"morot": 1, "person": "New player"}'
+				  }
+				  publish_data(data_base, values)
+				  document.getElementById("player").innerHTML = obj['values']['players'].length+1;
+				  document.getElementById("true_player").innerHTML = obj['values']['players'].length+1;
+				  oldNumberPlayers = obj['values']['players'].length+1
+			  }
+		   }};
+		xhr.send();
+	}
+
+	function create_game(data_base){
+		values = '{"players":[],"morot": 1, "person": "New player"}'
+		publish_data(data_base, values)
+		update_players(data_base)
+	}
+
+
+	function new_round(){
+		var url = "http://85.226.196.207:5000/get_sensor";
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", url);
+		
+		var response = ""
+
+		xhr.setRequestHeader("data_base", "morot_roles");
+		xhr.setRequestHeader("values", "1");
+
+		xhr.onreadystatechange = function () {
+		   if (xhr.readyState === 4) {
+			  console.log(xhr.status);
+			  const obj = JSON.parse(xhr.responseText)
+			  let b = document.getElementById("players_array").innerHTML.split(',').map(Number)
+			  let random = + Math.floor(Math.random() * (b.length + 1))
+			  console.log("Random number", random)
+			  let counter = 0
+			  while(b[random] != 0 && counter < 10){
+				  random = 1 + Math.floor(Math.random() * (b.length + 1))
+				  console.log("Random number has left, new number", random)
+				  counter += 1
+			  }
+			  console.log("Random number decided to", random)
+			  values = '{"players":[' + document.getElementById("players_array").innerHTML + '],"morot": ' + String(random) + ', "person":"' + String(obj["values"][Math.floor(Math.random() * obj["values"].length)]) + '"}'
+			  publish_data(data_base, values)
+		   }};
+
+		xhr.send();
+	}
+
+	function leave_session(data_base){
+		values = '{"players":' + document.getElementById("players_array").innerHTML + ',"morot": ' + String(1 + Math.floor(Math.random() * (parseInt(document.getElementById("players").innerHTML-1)))) + ', "person":"' + document.getElementById("role").innerHTML + '"}'
+		publish_data(data_base, values)
+	}
+
+	function exit_game(data_base){
+			var url = "http://85.226.196.207:5000/publish_sensor"
+			let b = String(document.getElementById("players_array").innerHTML).split(',').map(Number)
+			b[parseInt(document.getElementById("true_player").innerHTML)-1] = 1
+			var values = '{"data_base":"' + data_base + '", "values":{"players":[' + String(b) + '],"morot": ' + String(1 + Math.floor(Math.random() * (parseInt(document.getElementById("players").innerHTML-1)))) + ', "person":"' + document.getElementById("role").innerHTML + '"}}'
+			fetch(url, {
+				method:'post',
+				headers:{
+					'Content-Type': 'application/json',
+				},
+				body: values,
+				keepalive: true // this is important!
+			})
+		}
+		
+	var data_base = ''
+	//publish_data('morot', '{"players":10, "morot_player": 5}')
+	//get_data('morot')
+	
+		
+	function join_game(){
+		data_base = document.getElementById("session_id").value
+		update_players(data_base)
+		console.log(data_base)
+		document.getElementById("session").innerHTML = "Session: " + document.getElementById("session_id").value
+	}
+	
+	var intervalId = window.setInterval(function(){
+		if(document.getElementById("player").innerHTML != String(0)){
+			get_data(data_base)
+		}
+	}, 5000);
+	
+	function new_game(){
+		if(document.getElementById("session").innerHTML != "---"){
+			exit_game(data_base)
+		}
+		data_base = document.getElementById("session_id").value
+		create_game(data_base)
+		join_game()
+	}
+	
+	window.addEventListener("beforeunload", function() {
+		exit_game()
+	});
+	
+	function rules(){
+		alert("Hello! \nThanks for wanting to play! \nThe game is played in rounds where people take turn in starting. \nEveryone will get the same famous person showing up except for one person who is the morot and only will get the word \"Morot\". \nDuring the rounds everyone gets to say a one word clue related to the famous person. \n\nAfter a round there is an elimination process where the group should find the carrot and eliminate it. \n\nHence during the rounds it is up to the group to try and tell clues that only people who know the person will understand and it is up to the Morot to try and figure out the person or say an obscure clue that fits on most people. ");
+	}
+</script>
