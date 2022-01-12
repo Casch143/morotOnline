@@ -7,17 +7,18 @@
 		<style>
 			body{
 				margin:0;
-				background-color:#EF8A17;
+				background-color:#df7700;
 			}
 			
 			.container{
 				width:100vw;
 				height:100vh;
+				max-width: 100vh;
+				margin-left: auto;
+				margin-right: auto;
 				
 				font-family: 'Quicksand', sans-serif;
-				font-weight: bold;
 				font-size: 2vh;
-				font-color: #034732;
 				
 				display:grid; 
 				grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -38,18 +39,14 @@
 			.header{
 				grid-column-start:1;
 				grid-column-end:7;
-				border:0px solid #008148;
-				background: #008148;
-				font-size: 3vh;
-				box-shadow: 1.5vw 1.5vw 1vw 0.025vw #000000;
+				font-size: 2vh;
+				color:#ffffff;
 			}
 			
 			.footer{
 				grid-column-start:1;
 				grid-column-end:7;
-				border:0px solid #008148;
-				background: #008148;
-				box-shadow: 1.5vw 1.5vw 1vw 0.025vw #000000;
+				color:#ffffff;
 			}
 			
 			.content-main{
@@ -57,26 +54,26 @@
 				grid-row-end: 3;
 				grid-column-start:1;
 				grid-column-end:span 6;
-				box-shadow: 1.5vw 1.5vw 1vw 0.025vw #000000;
-				background: #008148;
+				color:#ffffff;
 			}
 			
 			.content-medium{
 				grid-row-start:3;
 				grid-row-end: 4;
-				background: #008148;
-				box-shadow: 1.5vw 1.5vw 1vw 0.025vw #000000;
+				color: beige;
 			}
 			
 			.content-small{
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				color: beige;
 			}
 			
 			.input{
 				width: 80%;
-				border-radius: 5px;
+				height: 4vw;
+				border-radius: 4vw;
 				font-family: 'Quicksand', sans-serif;
 				font-weight: bold;
 				font-size: 20px;
@@ -87,13 +84,15 @@
 			}
 			
 			.button{
-				border-radius: 4vw;
+				height: 5vh;
+				border-radius: 1vh;
 				border: none;
 				font-family: 'Quicksand', sans-serif;
 				font-weight: bold;
 				font-size: 2vh;
-				padding-left:3vw;
-				padding-right:3vw;
+				padding-left:2vw;
+				padding-right:2vw;
+				background-color: rgb(221, 221, 221);
 			}
 			
 		</style>
@@ -105,15 +104,13 @@
 			</div>
 			<div class="content-main">
 			<br>
-				<h2>You are:</h2>
-				<h1 id="role">-- Role --</h1>
-				<button type="button" class="button" onclick="new_round()">New round!</button>
-				<br>
-				<br>
-				<h3>Connected to</h3>
+				<h4>You are:</h4>
+				<h1 id="role" style="font-size: 8vh; font-weight: normal;">-- Role --</h1>
+				<h3 style="font-size: 1.5vh;">Connected to</h3>
 				<p id="session">---</p>
 				<p id="players_array" style="display:none">[]</p>
 				<p id="true_player" style="display:none">0</p>
+				<button type="button" class="button" onclick="new_round()">New round!</button>
 			</div>
 			<div class="content-medium" style="grid-column-start:1; grid-column-end:span 3;"> 
 				<h2>Player:</h2>
@@ -124,7 +121,7 @@
 				<h2 id="players">0</h2>
 			</div>
 			<div class="content-small" style="grid-column-start:1; grid-column-end:3; font-size:2.4vh; font-weight:bold;">
-				JOIN/CREATE
+				JOIN / CREATE
 			</div>
 			<div class="content-small" style="grid-column-start:3; grid-column-end:5;">
 				<input type="text" style="width:15vw" class="input" id="session_id" value="morot">
@@ -135,7 +132,7 @@
 			</div>
 			<div class="footer">
 				<h5 style="margin-bottom:8px; margin-top:15px">Made by: Casper Christiansen</h5>
-				<button type="button" onclick="rules()">Don't know the rules?</button>
+				<p onclick="rules()" style="font-size: 1.5vh;">Don't know the rules?</p>
 			</div>
 		</div>
 	</body>
